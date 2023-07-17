@@ -1,8 +1,8 @@
 const roles = {
-    "admin": "admin",
+    "administrateur": "administrateur",
     "customers": "customers",
     "manager": "manager",
-    "ambassador": "ambassador"
+    "ambassadeur": "ambassadeur"
 }
 
 module.exports = roles;

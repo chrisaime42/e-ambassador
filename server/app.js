@@ -18,14 +18,13 @@ const io = socketio(server, socketConfig)
  app.use(bodyParser.json());
  app.use(bodyParser.urlencoded({ extended: true}));
 
-
  // Initialisation de l'API
  app.get("/", (req, res) => {
     res.json({
-        path : "/api",
+       // path : `/api/`,
         version: '1.0.1',
         year : 2023,
-        message : "Bienvenue e-ambassador API RESTFUll "
+        message : "Bienvenue à e-ambassador API RESTFUll "
     })
  })
 
