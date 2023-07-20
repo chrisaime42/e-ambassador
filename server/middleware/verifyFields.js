@@ -8,6 +8,7 @@ const validateEmail = (email) => {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 };
+
 module.exports = {
   checkFieldsSignup: (req, res, next) => {
     //fields is empty
@@ -241,248 +242,183 @@ module.exports = {
          }*/
     next();
   },
-  checkFieldsDrone: (req, res, next) => {
+  checkFieldsFieldCustomers : (req, res) => {
     //fields is empty
     if (!req.body) {
       return res.status(400).json({
         code: 400,
-        message: "Please fields can not be empty",
+        message: "Les champs ne doivent pas être vides",
       });
     }
-    //tag is empty
-    if (!req.body.tag || req.body.tag.length === "") {
+    //firstname is empty
+    if (!req.body.firstname || req.body.firstname.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide tag value",
+        message: "Veuillez indiquer le prénom",
       });
     }
-    next();
-  },
-  checkFieldsDroneCoordinate: (req, res, next) => {
-    //latitude is empty
-    if (!req.body.latitude || req.body.latitude.length === "") {
+    //lastname is empty
+    if (!req.body.lastname || req.body.lastname.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide latitude coordinate",
+        message: "Veuillez indiquer le nom",
       });
     }
-    //longitude is empty
-    if (!req.body.longitude || req.body.longitude.length === "") {
+     //Address is empty
+     if (!req.body.address || req.body.address.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide longitude coordinate",
-      });
-    }
-    next();
-  },
-  checkFieldsDroneTypeId: (req, res, next) => {
-    //drone_type_id is empty
-    if (!req.body.drone_type_id || req.body.drone_type_id.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide drone type id value",
-      });
-    }
-  },
-  checkFieldsCustomersType: (req, res, next) => {
-    //fields is empty
-    if (!req.body) {
-      return res.status(400).json({
-        code: 400,
-        message: "Please fields can not be empty",
-      });
-    }
-    //name is empty
-    if (!req.body.name || req.body.name.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide name value",
-      });
-    }
-    next();
-  },
-  checkFieldsCustomers: (req, res, next) => {
-    //fields is empty
-    if (!req.body) {
-      return res.status(400).json({
-        code: 400,
-        message: "Please fields can not be empty",
-      });
-    }
-    //store_name is empty
-    if (!req.body.store_name || req.body.store_name.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide store name value",
-      });
-    }
-    //store_contact is empty
-    if (!req.body.store_contact || req.body.store_contact.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide store contact value",
-      });
-    }
-    //store_phone is empty
-    if (!req.body.store_phone || req.body.store_phone.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide store phone value",
-      });
-    }
-    //owner_fullname is empty
-    if (!req.body.owner_fullname || req.body.owner_fullname.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide owner fullname value",
-      });
-    }
-    //owner_address is empty
-    if (!req.body.owner_address || req.body.owner_address.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide owner address value",
+        message: "Veuillez indiquer l'addresse",
       });
     }
     //Email verify
     if (!req.body.email || !validateEmail(req.body.email)) {
       return res.status(400).json({
-        message: "Please provide a valid email address",
+        message: "Veuillez fournir une adresse email valide",
       });
     }
-    //username is empty
-    if (!req.body.username || req.body.username.length === "") {
+     //phone is empty
+     if (!req.body.telephone || req.body.telephone.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide username value",
+        message: "Veuillez indiquer le numéro de téléphone",
       });
     }
-    // username min 4 characters
-    if (!req.body.username || req.body.username.length <= 3) {
-      return res.status(400).json({
-        message: "Please enter a username with min. 4 characters",
-      });
-    }
-
-    // password min 6 characters
-    if (!req.body.store_phone || req.body.store_phone.length <= 8) {
-      return res.status(400).json({
-        message: "Please enter a store phone with min. 8 numeric values",
-      });
-    }
-    //password repeat must match
-    if (
-      !req.body.password_repeat ||
-      req.body.password_repeat != req.body.password
-    ) {
-      return res.status(400).json({
-        message: "Please Both password must match",
-      });
-    }
-    // password min 6 characters
-    if (!req.body.password || req.body.password.length < 6) {
-      return res.status(400).json({
-        message: "Please enter a password with min. 6 characters",
-      });
-    }
-
     next();
   },
-  checkFieldsCustomersUpdate: (req, res, next) => {
+  checkNewCustomersParticulierFields : (req, res) => {
     //fields is empty
     if (!req.body) {
       return res.status(400).json({
         code: 400,
-        message: "Please fields can not be empty",
+        message: "Les champs ne doivent pas être vides",
       });
     }
-    //store_name is empty
-    if (!req.body.store_name || req.body.store_name.length === "") {
+    //firstname is empty
+    if (!req.body.firstname || req.body.firstname.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide store name value",
+        message: "Veuillez indiquer le prénom",
       });
     }
-    //store_contact is empty
-    if (!req.body.store_contact || req.body.store_contact.length === "") {
+    //lastname is empty
+    if (!req.body.lastname || req.body.lastname.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide store contact value",
+        message: "Veuillez indiquer le nom",
       });
     }
-    //store_phone is empty
-    if (!req.body.store_phone || req.body.store_phone.length === "") {
+     //Address is empty
+     if (!req.body.address || req.body.address.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide store phone value",
-      });
-    }
-    //owner_fullname is empty
-    if (!req.body.owner_fullname || req.body.owner_fullname.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide owner fullname value",
-      });
-    }
-    //owner_address is empty
-    if (!req.body.owner_address || req.body.owner_address.length === "") {
-      return res.status(400).json({
-        code: 400,
-        message: "Please provide owner address value",
+        message: "Veuillez indiquer l'addresse",
       });
     }
     //Email verify
     if (!req.body.email || !validateEmail(req.body.email)) {
       return res.status(400).json({
-        message: "Please provide a valid email address",
+        message: "Veuillez fournir une adresse email valide",
       });
     }
-    //username is empty
-    if (!req.body.username || req.body.username.length === "") {
+     //phone is empty
+     if (!req.body.telephone || req.body.telephone.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide username value",
+        message: "Veuillez indiquer le numéro de téléphone",
       });
     }
-    // username min 4 characters
-    if (!req.body.username || req.body.username.length <= 3) {
+    //ambassadorId is empty
+    if (!req.body.ambassadorId || req.body.ambassadorId.length === "") {
       return res.status(400).json({
-        message: "Please enter a username with min. 4 characters",
+        code: 400,
+        message: "Veuillez indiquer l'identifiant",
       });
     }
-
-    // password min 6 characters
-    if (!req.body.store_phone || req.body.store_phone.length <= 8) {
-      return res.status(400).json({
-        message: "Please enter a store phone with min. 8 numeric values",
-      });
-    }
-
-    // password min 6 characters
-    if (!req.body.password || req.body.password.length < 6) {
-      return res.status(400).json({
-        message: "Please enter a password with min. 6 characters",
-      });
-    }
-
     next();
   },
-  validatePaymentMethod: (req, res, next) => {
-    //name is empty
-    if (!req.body.name || req.body.name.length === "") {
+  checkFieldsFieldCustomersEnterprise : (req, res) => {
+    //fields is empty
+    if (!req.body) {
       return res.status(400).json({
         code: 400,
-        message: "Please provide a payment method name",
+        message: "Les champs ne doivent pas être vides",
       });
     }
-    //name is empty
-    if (!req.body.type || req.body.type.length === "") {
+    //firstname is empty
+    if (!req.body.firstname || req.body.firstname.length === "") {
       return res.status(400).json({
         code: 400,
-        message: "Please provide a payment method type",
+        message: "Veuillez indiquer le prénom",
       });
     }
-
+    //lastname is empty
+    if (!req.body.lastname || req.body.lastname.length === "") {
+      return res.status(400).json({
+        code: 400,
+        message: "Veuillez indiquer le nom",
+      });
+    }
+     //Address is empty
+     if (!req.body.address || req.body.address.length === "") {
+      return res.status(400).json({
+        code: 400,
+        message: "Veuillez indiquer l'addresse",
+      });
+    }
+    //Email verify
+    if (!req.body.email || !validateEmail(req.body.email)) {
+      return res.status(400).json({
+        message: "Veuillez fournir une adresse email valide",
+      });
+    }
+     //phone is empty
+     if (!req.body.telephone || req.body.telephone.length === "") {
+      return res.status(400).json({
+        code: 400,
+        message: "Veuillez indiquer le numéro de téléphone",
+      });
+    }
+     //managerName is empty
+     if (!req.body.managerName || req.body.managerName.length === "") {
+      return res.status(400).json({
+        code: 400,
+        message: "Veuillez indiquer le nom du gerant",
+      });
+    }
+        //companyName is empty
+        if (!req.body.companyName || req.body.companyName.length === "") {
+          return res.status(400).json({
+            code: 400,
+            message: "Veuillez indiquer le nom de l'entreprise",
+          });
+        }
+        //companyImage is empty
+        if (req.file.size > 2097152) {
+          return res.status(400).json({
+            code: 400,
+            message: "Image trop lourde < 2M ",
+          });
+        }
+        if (!req.file.mimetype.startsWith("image")) {
+          return res.status(400).json({
+            code: 500,
+            message: "Format non supporté",
+          });
+        }
     next();
+
   },
+  checkFieldsOtp : (req, res) => {
+    
+     //otp is empty
+     if (!req.body.otp || req.body.otp.length === "") {
+      return res.status(400).json({
+        code: 400,
+        message: "Veuillez taper le code reçu par sms ",
+      });
+    }
+    next();
+
+  }
 };

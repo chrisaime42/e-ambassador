@@ -5,15 +5,13 @@ module.exports = {
     //Save new customers with Particulier status
     saveNewCustomersParticulier: (data, callback) => {
         dbConfig.query(`INSERT INTO customers (firstname,lastname, email,
-            telephone, address, type, ambassadorId, status ) values (?,?,?,?,?,?,?,?)`,[
+            telephone, address, type, ambassadorId, status ) values (?,?,?,?,?,'Particulier',?,'Enregistrer')`,[
                 data.firstname,
                 data.lastname,
                 data.email,
                 data.telephone,
                 data.address,
-                'Particulier',
                 data.ambassadorId,
-                'Enregistrer'
             ],(error, results) => {
                 if (error) {
                     throw error;
@@ -70,8 +68,8 @@ module.exports = {
         );
     },
     //Get Details Customers saved by ambassadorId
-    getDetailCustomersSavedByAmbassadorId: (id, callback) => {
-        dbConfig.query(`SELECT c.*, a.*  FROM customers as c, ambassador as a WHERE c.ambassadorId = a.id AND a.id = ? `,[ id ],(error, results) => {
+    getDetailCustomersSavedByAmbassadorId: (data,id, callback) => {
+        dbConfig.query(`SELECT c.*, a.*  FROM customers as c, ambassador as a WHERE c.ambassadorId = a.id AND c.id = ? AND a.id = ?`,[ data.id,id ],(error, results) => {
                 if (error) {
                     throw error;
                     return;
@@ -120,7 +118,7 @@ module.exports = {
     },
     //Get only ambassadors by Id
     getAmbassadorById: (id, callback) => {
-        dbConfig.query(`SELECT * FROM users WHERE id = ?`, [id]
+        dbConfig.query(`SELECT * FROM ambassador WHERE id = ?`, [id]
         ,(error, results) => {
             if (error) {
                 throw error;
@@ -150,7 +148,7 @@ module.exports = {
         })
     },
     //Verify Account ambassadors by Id to (whatsapp verification, sms, email, otp)
-    saveOTPCode: (data,id, callback) => {
+    sendOTPCode: (data,id, callback) => {
         dbConfig.query(`UPDATE ambassador SET otp = ?  WHERE id = ?`, [data.otp,id]
         ,(error, results) => {
             if (error) {
@@ -161,8 +159,40 @@ module.exports = {
         })
     },
     //Verify Account ambassadors by Id to (whatsapp verification, sms, email)
-    verifiedAccountAmbassadorById: (id, callback) => {
-        dbConfig.query(`UPDATE ambassador SET isVerified = 1  WHERE id = ?`, [id]
+    //Get telehpne to ambassador by Id
+getTelephoneByAmbassadorId: (id, callback) => {
+        dbConfig.query(`SELECT * FROM ambassador WHERE id = ?`, [id]
+        ,(error, results) => {
+            if (error) {
+                throw error;
+                return;
+            }
+            return callback(null, results[0])
+        })
+},
+//Create New Account to ambassador 
+createNewAccountAmbassador: (data, callback) => {
+    dbConfig.query(`INSERT INTO ambassador (firstname,lastname, email, telephone, address, password,
+        role) values (?,?,?,?,?,?,'ambassadeur')`,[
+            data.firstname,
+            data.lastname,
+            data.email,
+            data.telephone,
+            data.address,
+            data.password
+        ],(error, results) => {
+            if (error) {
+                throw error;
+                return;
+            }
+            return callback(null, results)
+        }
+    );
+},
+
+    //Verify Account ambassador
+verifiedAccountAmbassadorById: (data,id, callback) => {
+        dbConfig.query(`UPDATE ambassador SET isVerified = 1 , otp= ? WHERE id = ?`, [data.otp,id]
         ,(error, results) => {
             if (error) {
                 throw error;
@@ -171,8 +201,10 @@ module.exports = {
             return callback(null, results)
         })
     },
+    
+    
     //Delete or Desactivated amabassador by Id
-    deleteAmbassadorById: (id, callback) => {
+deleteAmbassadorById: (id, callback) => {
         dbConfig.query(`UPDATE ambassador SET isValidated = 0 WHERE id = ?`, [id]
         ,(error, results) => {
             if (error) {
@@ -183,7 +215,7 @@ module.exports = {
         })
     },
     //Change Password or forgot password
-    changePasswordAmbassadorById: (data,id, callback) => {
+changePasswordAmbassadorById: (data,id, callback) => {
         dbConfig.query(`UPDATE ambassador SET password = ?  WHERE id = ?`, [data.password,id]
         ,(error, results) => {
             if (error) {
@@ -193,31 +225,8 @@ module.exports = {
             return callback(null, results)
         })
     },
-    //Create new account ambassador
-    //Create New Account to ambassador 
-    createNewAccountAmbassador: (data, callback) => {
-        dbConfig.query(`INSERT INTO ambassador (firstname,lastname, email, telephone, address, password,
-            role) values (?,?,?,?,?,?,?)`,[
-                data.firstname,
-                data.lastname,
-                data.email,
-                data.telephone,
-                data.address,
-                data.password,
-                'ambassadeur'
-            ],(error, results) => {
-                if (error) {
-                    throw error;
-                    return;
-                }
-                return callback(null, results)
-            }
-        );
-    },
-    //Login to ambassador account
+    //Create new password ambassador
     
-
-
 //STATISTIQUES
     //Get Total customers saved by ambassadorId
     getTotalCustomersInscrits : (id, callback) => {
