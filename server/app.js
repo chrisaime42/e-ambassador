@@ -30,12 +30,13 @@ const io = socketio(server, socketConfig)
 
 // Importations des routes 
 const userRouter = require("./api/users/user.router")
+const ambassadorRouter = require("./api/ambassadors/ambassador.router")
 
 
 
 // Initialisations des routes
 app.use("/api/users", userRouter)
-
+app.use("/api/ambassadors", ambassadorRouter)
 
 //Initialisation des Port d'ecoutes
 const PORT = process.env.APP_PORT || 5000;
