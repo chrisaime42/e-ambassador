@@ -2,8 +2,27 @@
 const tokenVerify = require('../../utils/tokenVerify')
 const verifyRoles = require('../../utils/verifyRoles')
 const roles = require('../../utils/roles')
-const { saveNewCustomersParticulier, getStatusCustomersSavedByAmbassadorId, getAllCustomersSavedByAmbassadorId, getDetailCustomersSavedByAmbassadorId, updateInfoCustomersSavedByAmbassadorId, getAmbassadorById, updateAmbassadorById, verifiedAccountAmbassadorById, createNewAccountAmbassador, deleteAmbassadorById, getTotalCustomersInscrits, getTotalCustomersSigner, getTotalCustomersRelancer, getTotalCustumersRevoquer, login } = require('./ambassador.controllers')
+const { saveNewCustomersParticulier, getStatusCustomersSavedByAmbassadorId, getAllCustomersSavedByAmbassadorId, getDetailCustomersSavedByAmbassadorId, updateInfoCustomersSavedByAmbassadorId, getAmbassadorById, updateAmbassadorById, verifiedAccountAmbassadorById, createNewAccountAmbassador, deleteAmbassadorById, getTotalCustomersInscrits, getTotalCustomersSigner, getTotalCustomersRelancer, getTotalCustumersRevoquer, login, sendOTPCodeToAmbassador, saveNewCustomersEntreprise, verifyAmbassadorAccountWithOTPCode } = require('./ambassador.controllers')
 const { checkNewCustomersParticulierFields, checkFieldsFieldCustomersEnterprise, checkFieldsSignup, checkFieldsOtp } = require('../../middleware/verifyFields')
+
+const multer = require("multer");
+const storage = multer.diskStorage({});
+
+/*const filFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};*/
+
+//const maxSize = 1 * 1024 * 1024; //1mb
+
+const uploads = multer({
+  storage: storage,
+  // limits: { fileSize: maxSize },
+  // fileFilter: filFilter,
+});
 
 
 const router = require('express').Router()
@@ -13,7 +32,7 @@ const router = require('express').Router()
    router.post('/new-customers/particulier', tokenVerify, checkNewCustomersParticulierFields,verifyRoles(roles.ambassadeur),saveNewCustomersParticulier)
 
    //Save new customers with Enterprise status
-   router.post('/new-customers/entreprise', tokenVerify, checkFieldsFieldCustomersEnterprise,verifyRoles(roles.ambassadeur),saveNewCustomersParticulier)
+   router.post('/new-customers/entreprise', tokenVerify,uploads.single("companyImage"), checkFieldsFieldCustomersEnterprise,verifyRoles(roles.ambassadeur),saveNewCustomersEntreprise)
 
    //Get status Customers save by ambassador
    router.get('/status-customers-saved/:id/ambassador',tokenVerify, verifyRoles(roles.ambassadeur),getStatusCustomersSavedByAmbassadorId)
@@ -31,8 +50,12 @@ const router = require('express').Router()
    //update ambassadors by Id
    router.patch('/update-single-ambassador/:id',tokenVerify, verifyRoles(roles.ambassadeur),updateAmbassadorById)
 
-   //Verify Account ambassador
-   router.patch('/verify/:id',tokenVerify,checkFieldsOtp, verifyRoles(roles.ambassadeur),verifiedAccountAmbassadorById)
+   // Send OTP code to ambassador
+   router.post('/send-otp',sendOTPCodeToAmbassador)
+ 
+   //Verify account ambassador with OTP code 
+   router.post('/verify-otp',checkFieldsOtp,verifyAmbassadorAccountWithOTPCode)
+  
 
    //Delete or Desactivated amabassador by Id
    router.patch('/desactived/:id',tokenVerify, verifyRoles(roles.ambassadeur),deleteAmbassadorById)
@@ -52,9 +75,9 @@ const router = require('express').Router()
      router.get('/total-customers-revoice/:id/ambassador', tokenVerify, verifyRoles(roles.ambassadeur),getTotalCustumersRevoquer)
 
    //S'authentifier
-   router.get('/auth/login', verifyRoles(roles.ambassadeur),login)
+   router.post('/auth/login',login)
    
    //create new account ambassador
-   router.post('/auth/register',tokenVerify,checkFieldsSignup, verifyRoles(roles.ambassadeur),createNewAccountAmbassador)
+   router.post('/auth/register',checkFieldsSignup,createNewAccountAmbassador)
 
 module.exports = router;

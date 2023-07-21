@@ -39,12 +39,12 @@ module.exports = {
       });
     }
 
-    //Role verify
-    if (!req.body.role || req.body.lastname.length === "") {
-        return res.status(400).json({
-          message: "Veuillez indiquer le role",
-        });
-      }
+    // //Role verify
+    // if (!req.body.role || req.body.lastname.length === "") {
+    //     return res.status(400).json({
+    //       message: "Veuillez indiquer le role",
+    //     });
+    //   }
       
     //phone is empty
     if (!req.body.telephone || req.body.telephone.length === "") {
@@ -242,7 +242,7 @@ module.exports = {
          }*/
     next();
   },
-  checkFieldsFieldCustomers : (req, res) => {
+  checkFieldsFieldCustomers : (req, res, next) => {
     //fields is empty
     if (!req.body) {
       return res.status(400).json({
@@ -286,7 +286,7 @@ module.exports = {
     }
     next();
   },
-  checkNewCustomersParticulierFields : (req, res) => {
+  checkNewCustomersParticulierFields : (req, res, next) => {
     //fields is empty
     if (!req.body) {
       return res.status(400).json({
@@ -337,7 +337,8 @@ module.exports = {
     }
     next();
   },
-  checkFieldsFieldCustomersEnterprise : (req, res) => {
+
+  checkFieldsFieldCustomersEnterprise : (req, res,next) => {
     //fields is empty
     if (!req.body) {
       return res.status(400).json({
@@ -394,12 +395,19 @@ module.exports = {
           });
         }
         //companyImage is empty
+        if (!req.file || req.file === "") {
+          return res.status(400).json({
+            code: 400,
+            message: "Veuillez fournir l'image de l'entreprise",
+          });
+        }
         if (req.file.size > 2097152) {
           return res.status(400).json({
             code: 400,
             message: "Image trop lourde < 2M ",
           });
         }
+    
         if (!req.file.mimetype.startsWith("image")) {
           return res.status(400).json({
             code: 500,
@@ -409,7 +417,7 @@ module.exports = {
     next();
 
   },
-  checkFieldsOtp : (req, res) => {
+  checkFieldsOtp : (req, res,next) => {
     
      //otp is empty
      if (!req.body.otp || req.body.otp.length === "") {
@@ -419,6 +427,5 @@ module.exports = {
       });
     }
     next();
-
-  }
+  },
 };

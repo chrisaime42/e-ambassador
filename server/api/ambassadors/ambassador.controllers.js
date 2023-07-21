@@ -1,11 +1,13 @@
 
 const { genSaltSync, hashSync, compareSync, compare } = require("bcrypt");
-require("dotenv").config()
 const { sign } = require("jsonwebtoken");
 const textflow = require("textflow.js");
-const { saveNewCustomersParticulier, saveNewCustomersEntreprise, getStatusCustomersSavedByAmbassadorId, getAllCustomersSavedByAmbassadorId, getDetailCustomersSavedByAmbassadorId, updateInfoCustomersSavedByAmbassadorId, getAmbassadorByEmail, getAmbassadorById, updateAmbassadorById, getTelephoneByAmbassadorId, sendOTPCode, verifiedAccountAmbassadorById, deleteAmbassadorById, getTotalCustomersInscrits, getTotalCustomersSigner, getTotalCustomersRelancer, getTotalCustumersRevoquer, createNewAccountAmbassador } = require("./ambassador.service");
+const { saveNewCustomersParticulier, saveNewCustomersEntreprise, getStatusCustomersSavedByAmbassadorId, getAllCustomersSavedByAmbassadorId, getDetailCustomersSavedByAmbassadorId, updateInfoCustomersSavedByAmbassadorId, getAmbassadorByEmail, getAmbassadorById, updateAmbassadorById, deleteAmbassadorById, getTotalCustomersInscrits, getTotalCustomersSigner, getTotalCustomersRelancer, getTotalCustumersRevoquer, createNewAccountAmbassador, getAmbassadorByTelephone, getCustomersByEmail, getCustomersByTelephone, getCustomersByCompanyName, updateOTP, updateOTPToNull, resetOTP } = require("./ambassador.service");
+const { generateOTP, SEND_SMS_WITH_TWILIO } = require("../../middleware/function");
+const cloudinary = require("../../helper/cloudinary");
+const e = require("express");
 
-textflow.useKey(process.env.API_KEY_TEXTFLOW_SMS)
+textflow.useKey(`${process.env.API_KEY_TEXTFLOW_SMS}`)
 
 module.exports = {
 
@@ -14,7 +16,7 @@ module.exports = {
     saveNewCustomersParticulier: async (req, res) => {
         const body = req.body;
        // const salt = genSaltSync(10);
-        getUserByEmail(body, (error, exists) => {
+       saveNewCustomersParticulier(body, (error, exists) => {
            // console.log(exists)
            if(error) {
             throw error;
@@ -49,36 +51,73 @@ module.exports = {
     saveNewCustomersEntreprise: async (req, res) => {
     const body = req.body;
    // const salt = genSaltSync(10);
-    getUserByEmail(body, (error, exists) => {
-       // console.log(exists)
-       if(error) {
-        throw error;
-       }
-        if(exists){
-            return res.json({
-                success: 0,
-                code : 305,
-                message: "l'email est déjà utilisé!"
+    if (req.file) {
+        console.log(" req file 1", req.file.path);
+        try {
+        await cloudinary.uploader
+            .upload(req.file.path, {
+            public_id: `${Date.now()}_${body.name}`,
+            resource_type: "auto",
+            folder: "ambassador",
             })
-        }else {
-           // body.password = hashSync(body.password,salt);
-           saveNewCustomersEntreprise(body, (error, results) => {
-                if(error)  {
-                    console.log(error);
+            .then((result) => {
+            body.companyImage = result.url;
+            });
+        } catch (e) {
+        console.log(e);
+        res.status(505).json({
+            code: 505,
+            message: "Erreur chargement image, ressayer svp...",
+        });
+        }
+    }
+    getCustomersByEmail(body, (error, emailExists) => {
+        if(error) throw error;
+
+        if(emailExists) {
+            return res.json({
+                success : 0,
+                message: "L'email est déjà occupé ..."
+            })
+        } else {
+            getCustomersByTelephone(body, (error, phoneExists) => {
+                if(error) throw error;
+                if(phoneExists) {
                     return res.json({
                         success: 0,
-                        code : 500,
-                        message: "Erreur de connexion..."
-                    }); 
+                        message: "Numero de telephone est déjà occupé"
+                    })
+                } else {
+                    getCustomersByCompanyName(body, (error, companyNameExists) => {
+                        if (error) throw error;
+
+                        if(companyNameExists) {
+                            return res.json({
+                                success: 0,
+                                message: "Le nom de l'entreprise a deja été enregistré"
+                            })
+                        } else {
+                            saveNewCustomersEntreprise(body, (error, results) => {
+                                if(error)  {
+                                    console.log(error);
+                                    return res.json({
+                                        success: 0,
+                                        code : 500,
+                                        message: "Erreur de connexion..."
+                                    }); 
+                                }
+                                if(results) return res.json({
+                                    success: 1,
+                                    code : 200,
+                                    message : "Client enregistré !"
+                                })
+                            })
+                        }
+                    })
                 }
-                if(results) return res.json({
-                    success: 1,
-                    code : 200,
-                    message : "Client enregistré !"
-                })
             })
         }
-    })
+   })
 },
 //Get status Customers save by ambassador
 getStatusCustomersSavedByAmbassadorId: async (req,res)=>{
@@ -148,6 +187,59 @@ getDetailCustomersSavedByAmbassadorId: async (req,res)=>{
 updateInfoCustomersSavedByAmbassadorId: async(req, res) => {
     const body = res.body;
     const id = parseInt(req.params.id)
+    if (req.file) {
+        console.log(" req file 1", req.file.path);
+        try {
+        await cloudinary.uploader
+            .upload(req.file.path, {
+            public_id: `${Date.now()}_${body.name}`,
+            resource_type: "auto",
+            folder: "ambassador",
+            })
+            .then((result) => {
+            body.companyImage = result.url;
+            });
+        } catch (e) {
+        console.log(e);
+        res.status(505).json({
+            code: 505,
+            message: "Erreur chargement image, ressayer svp...",
+        });
+        }
+    }
+    // getCustomersByEmail(body,(error, emailExists) => {
+    //     if (error) throw error;
+    //     if(emailExists) {
+    //         return res.json({
+    //             success : 0,
+    //             message : "Email deja occupé",
+    //         })
+    //     } 
+    //     getCustomersByTelephone(body,(error, phoneExists) => {
+    //         if(error) throw error;
+    //         if(phoneExists) {
+    //             return res.json({
+    //                 success : 0,
+    //                 message: "Numero de Telephone occupée"
+    //             })
+    //         } else {
+    //             getCustomersByCompanyName(body,(error, companyNameExists) => {
+    //                 if(error) throw error;
+    //                 if(companyNameExists){
+    //                     return res.json({
+    //                         success: 0,
+    //                         message: "Le nom de l'entreprise est deja occupée"
+    //                     })
+    //                 } else {
+                        
+    //                 }
+    //             })
+    //         }
+    //     })
+       
+        
+
+    // })
     updateInfoCustomersSavedByAmbassadorId(body, id,(error, results) => {
         if(error){
             throw error;
@@ -188,6 +280,7 @@ updateInfoCustomersSavedByAmbassadorId: async(req, res) => {
         });
     },
     //update ambassadors by Id
+    
     updateAmbassadorById : async(req, res) => {
         const id = parseInt(req.params.id)
         const body =  req.body;
@@ -213,6 +306,7 @@ updateInfoCustomersSavedByAmbassadorId: async(req, res) => {
     //create new account ambassador
     createNewAccountAmbassador: async(req, res) => {
         const body = req.body;
+          const salt = genSaltSync(10);
         getAmbassadorByEmail(body, (error, emailExists) => {
             if(error) {
                 throw error;
@@ -223,70 +317,98 @@ updateInfoCustomersSavedByAmbassadorId: async(req, res) => {
                     message : "L'email est déjà occupé..."
                 })
             } else {
-                createNewAccountAmbassador(body, async (error, results) => {
-                    if(error) {
-                        throw error;
-                        return;
-                    }
-                    if(results) {
-                       // Envoyer le code de verification
-                       let result = await textflow.sendVerificationSMS(req.body.telephone, {
-                        service_name : `Votre code de vérification E-ambassador est : ${result.data.verification_code}`,
-                        seconds: 86400 //1d
-                       })
-                       if(result.ok) {
-                         //  sendOTPCode(result.data.verification_code, result.id)
-                           return res.json({success: 1, message: "Code de verification envoyé", data: result})
-                       }
+                getAmbassadorByTelephone(body, (error, phoneExists) => {
+                    if(phoneExists) {
+                        return res.json({
+                        success : 0,
+                        message : "Numero de telephone est déjà occupé..."
+                     })
+                    } else {
+                        body.password = hashSync(body.password,salt);
+                        createNewAccountAmbassador(body, async (error, results) => {
+                            if(error) {
+                                throw error;
+                                return;
+                            }
+                            return res.json({
+                                success: 1,
+                                message: "Ambassadeur enregistré"
+                        })
+                        })
                     }
                 })
             }
         })
 
     },
-     //Verify Account ambassadors by Id to (whatsapp verification, sms, email, otp)
-     verifiedAccountAmbassadorById : async(req, res) => {
+     //Send OTP CODE to Account ambassadors by Id to (whatsapp verification, sms, email, otp)
+     sendOTPCodeToAmbassador : async(req, res) => {
         const id = parseInt(req.params.id);
         const body = req.body;
-        getTelephoneByAmbassadorId(id, async(error, data) => {
+        const OTP_CODE = generateOTP();
+        const PHONE_NUMBER = process.env.MY_PHONE_NUMBER_TWILIO;
+        const Message = `Hello, Votre code de verification E-amabssador est : ${OTP_CODE}`
+       // const salt = genSaltSync(10);
+        getAmbassadorByTelephone(body, async(error, phoneExists) => {
             if (error) throw error;
-            if(data) {
-                console.log("Telephone : ", data)
-                verifiedAccountAmbassadorById(body,data.id, async (error, results) => {
-                    if(error) {
-                        throw error;
-                        return;
-                    }
-                    if(results) {
-                        let result = await textflow.verifyCode(`${data.telephone}`, `${req.body.otp}`); 
-                        if(result.valid) {
-                            return res.json({
-                                success : 1,
-                                message: "Vérification effectuée..."
-                            })
-                        } else {
-                            return res.json({
-                                success : 0,
-                                message: "Code OTP incorrecte..."
-                            })
-                        }
-                        
-                    } else {
-                        return res.json({
-                            success : 0,
-                            message: "Vérification non effectuée..."
-                        })
-                    }
-                   
+            if(!phoneExists) {
+                return res.json({
+                    success: 0,
+                    message: "Numéro de telephone incorrecte..."
                 })
-                
+            } else {
+                const salt = genSaltSync(10);
+               console.log("OTP ", OTP_CODE)
+               console.log("PHONE ", phoneExists.telephone)
+               console.log("PHONE TWILIO ", PHONE_NUMBER)
+               SEND_SMS_WITH_TWILIO(PHONE_NUMBER, phoneExists.telephone, Message)
+               
+               let otp = OTP_CODE 
+               let telephone = phoneExists.telephone
+               updateOTP(otp,telephone,(error, results) => {})
+               return res.json({
+                success: 1,
+                message: "Code de verification transferé",
+                data: otp
+            })
             }
         }) 
      },
+     
+     // Verify account ambassador to OTP code
+     verifyAmbassadorAccountWithOTPCode : async(req, res) => {
+        const id = parseInt(req.params.id);
+        const body = req.body;
+        //const salt = genSaltSync(10);
+        getAmbassadorByTelephone(body, async(error, phoneExists) => {
+            if (error) throw error;
+            if(!phoneExists) {
+                return res.json({
+                    success: 0,
+                    message: "Numéro de telephone incorrecte..."
+                })
+            } else {
+                if (body.otp && body.otp !== phoneExists.otp ) {
+                    return res.json({
+                        succes: 0,
+                        message: "Code verification incorrecte..."
+                    })
+                } else {
+                    let telephone = phoneExists.telephone
+                    resetOTP(telephone, (error, results) =>{})
+                    return res.json({
+                        succes: 1,
+                        message: "Verification effectué"
+                    })
+                }
+            }
+        }) 
+     },
+
       //Delete or Desactivated amabassador by Id
       deleteAmbassadorById: async(req, res) => {
         const id = parseInt(req.params.id);
-        deleteAmbassadorById(id, async(error, reults) => {
+        deleteAmbassadorById(id, async(error, results) => {
             if(error) {
                 throw error;
                 return;
@@ -405,7 +527,14 @@ login: async (req, res) => {
                         }
                     })
                     
-            } 
+            } else {
+                return res.json({
+                    success: 0,
+                    code: 301,
+                    message: "Email invalide !"
+                })
+            }
         })
 },
+
 }
