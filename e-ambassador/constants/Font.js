@@ -9,5 +9,11 @@ export default {
   "rubik-medium": "rubik-medium",
   "rubik-regular": "rubik-regular",
   "rubik-semiBold": "rubik-semiBold",
+
+    // Figtree font
+    "figtree-bold": "figtree-bold",
+    "figtree-light": "figtree-light",
+    "figtree-medium": "figtree-medium",
+    "figtree-regular": "figtree-regular",
 };
  

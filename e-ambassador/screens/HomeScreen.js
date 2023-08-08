@@ -1,32 +1,24 @@
 import React from 'react';
-import {View, StyleSheet, ScrollView, Text, Touchable, TouchableOpacity} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 import {colors, shadow, sizes, spacing} from '../constants/Theme';
-import MainHeader from '../components/MainHeader';
-import ScreenHeader from '../components/ScreenHeader';
-import {STATS} from '../data/index';
-import { AntDesign } from '@expo/vector-icons';
-
-import SectionHeader from '../components/SectionHeader';
-import Card from '../components/Card';
-import FontSize from '../constants/FontSize';
-import Font from '../constants/Font';
 import WelcomeHeader from '../components/WelcomeHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import BalanceAccount from '../components/BalanceAccount';
+import MainHeader from '../components/MainHeader';
+import StatisticsCard from '../components/StatisticsCard';
 
 const HomeScreen = () => {
   return (
-   
-    <View style={styles.container}>
-     <ScrollView showsVerticalScrollIndicator={false} >
-     <WelcomeHeader />
-        <Card
-          list={STATS}
+    <ScrollView showsVerticalScrollIndicator={false} >
+      <SafeAreaView style={styles.container}>
+        <MainHeader />
+        <BalanceAccount 
+          title={"Mon compte E-ambassador"}
+          balance={"1,500.66"}
          />
-         
+         <StatisticsCard ti />
+      </SafeAreaView>    
     </ScrollView>
-    <TouchableOpacity style={styles.btn}>
-      <AntDesign name="plus" size={26} color="white" />
-    </TouchableOpacity>
-    </View>
     
   );
 };
@@ -51,7 +43,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#364F6B",
+    backgroundColor: colors.backgroundColor,
   },
 });
 

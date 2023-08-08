@@ -14,4 +14,10 @@ export default {
   "rubik-medium": require("../assets/fonts/Rubik-Medium.ttf"),
   "rubik-regular": require("../assets/fonts/Rubik-Regular.ttf"),
   "rubik-semiBold": require("../assets/fonts/Rubik-SemiBold.ttf"),
+
+  //Figtree font
+  "figtree-bold": require("../assets/fonts/Figtree-Bold.ttf"),
+  "figtree-light": require("../assets/fonts/Figtree-Light.ttf"),
+  "figtree-medium": require("../assets/fonts/Figtree-Medium.ttf"),
+  "figtree-regular": require("../assets/fonts/Figtree-Regular.ttf"),
 };

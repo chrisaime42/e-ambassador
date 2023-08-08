@@ -7,7 +7,6 @@ const WelcomeHeader = () => {
   return (
     <View>
       <MainHeader />
-      <ScreenHeader mainTitle={"Hi, Hertz"} secondTitle={"Bon retour !"} />
     </View>
   )
 }
