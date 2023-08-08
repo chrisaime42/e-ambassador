@@ -14,8 +14,6 @@ import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
 import Font from "../constants/Font";
 import { Ionicons } from "@expo/vector-icons";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
 import AppTextInput from "../components/AppTextInput";
 
 
@@ -193,6 +191,7 @@ const LoginScreen = ({ navigation: { navigate } }) => {
               </View>
             </View>
           </View>
+          <View style={styles.RigthCircle} />
         </SafeAreaView>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -202,4 +201,15 @@ const LoginScreen = ({ navigation: { navigate } }) => {
 
 export default LoginScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  RigthCircle: {
+    backgroundColor: "red",
+    position: 'absolute',
+    width:  200,
+    height: 210,
+    borderRadius: 200,
+    left:10,
+    top: -40,
+    
+  },
+});

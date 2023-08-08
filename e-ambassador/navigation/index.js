@@ -4,11 +4,13 @@ import * as React from "react";
 import Colors from "../constants/Colors";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import Welcome from "../screens/WelcomeScreen";
+import Welcome from "../screens/HomeScreen";
 import ForgotPaswordScreen from "../screens/ForgotPasswordScreen";
 import VerifyPasswordOTPScreen from "../screens/VerifyPasswordOTPScreen";
 import { Text } from "react-native";
 import CreateNewPasswordScreen from "../screens/CreateNewPasswordScreen";
+import OnboardingScreen from "../screens/OnboardingScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 
 const theme = {
@@ -35,13 +37,17 @@ const RootNavigator = () => {
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName="Onboarding"
+      
     >
-      <Stack.Screen name="Welcome" component={Welcome} />
+      <Stack.Screen  name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPaswordScreen}  />
       <Stack.Screen name="VerifyPasswordOTP" component={VerifyPasswordOTPScreen} />
       <Stack.Screen name="CreateNewPassword" component={CreateNewPasswordScreen} />
+      
       
     </Stack.Navigator>
   );

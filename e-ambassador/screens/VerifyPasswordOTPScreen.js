@@ -9,18 +9,20 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
 import Font from "../constants/Font";
-import { Ionicons } from "@expo/vector-icons";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
 import AppTextInput from "../components/AppTextInput";
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+
 
 
 const VerifyPasswordOTPScreen = ({ navigation: { navigate } }) => {
+  
+  
+ 
   return (
     <KeyboardAvoidingView style={{ flex : 1}} 
           behavior={Platform.OS === 'ios' ? 'padding' : ''}
@@ -33,7 +35,7 @@ const VerifyPasswordOTPScreen = ({ navigation: { navigate } }) => {
             }}
           >
             <View
-              style={{
+              style={{ 
                 alignItems: "center",
               }}
             >
@@ -66,7 +68,7 @@ const VerifyPasswordOTPScreen = ({ navigation: { navigate } }) => {
             >
               <AppTextInput placeholder="Tapez le code ici..." />
             </View>
-            <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
+            <TouchableOpacity>
             <View>
                 <Text
                   style={{
@@ -194,8 +196,10 @@ const VerifyPasswordOTPScreen = ({ navigation: { navigate } }) => {
               </View>
             </View> */}
           </View>
+        
         </SafeAreaView>
         </ScrollView>
+        
       </KeyboardAvoidingView>
    
   );

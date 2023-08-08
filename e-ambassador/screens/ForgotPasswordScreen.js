@@ -14,8 +14,6 @@ import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
 import Font from "../constants/Font";
 import { Ionicons } from "@expo/vector-icons";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
 import AppTextInput from "../components/AppTextInput";
 
 
@@ -105,7 +103,7 @@ const ForgotPaswordScreen = ({ navigation : { navigate } }) => {
                 }}
               >
                 <TouchableOpacity
-                onPress={() => ("Login")}
+                onPress={() => navigate("Login")}
                   style={{
                     padding: Spacing,
                     backgroundColor: Colors.gray,
