@@ -6,11 +6,12 @@ import Font from '../constants/Font';
 
 const BalanceAccount = ({title, balance}) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container]}>
      <View>
       <Text style={styles.title}>{title}</Text>
       <Text  style={styles.balance}>{balance} EA </Text>
      </View>
+     
     </SafeAreaView>
   )
 }

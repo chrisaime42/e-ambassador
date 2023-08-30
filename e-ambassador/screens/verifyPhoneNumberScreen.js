@@ -8,36 +8,33 @@ import {
   TextInput,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors, sizes } from '../constants/Theme';
 import Colors from '../constants/Colors';
 
 const INPUT_OFFSET = 50;
 
 
-const ForgotPaswordScreen = ({ navigation  }) => {
+const VerifyPhoneNumber = ({ navigation}) => {
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    telephone: '',
+    code: '',
   });
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Entrez votre numéro</Text>
+          <Text style={styles.title}>Reinitialiser</Text>
 
           <Text style={styles.subtitle}>
-          Vous recevrez un code à 4 chiffres pour vérifier votre compte.
+          Entrer le code que vous avez reçu par sms au Numero +22800000000.
           </Text>
         </View>
 
         <View style={styles.form}>
           <View style={styles.input}>
-            <Text style={styles.inputLabel}>+228</Text>
-
             <TextInput
               keyboardType="phone-pad"
-              onChangeText={phone => setForm({ ...form, phone })}
-              placeholder="Numero de telephone"
+              onChangeText={code => setForm({ ...form, code })}
+              placeholder="Code eg: 00xxxx"
               placeholderTextColor="#505060"
               returnKeyType="done"
               style={styles.inputControl}
@@ -48,12 +45,12 @@ const ForgotPaswordScreen = ({ navigation  }) => {
           <View style={styles.formAction}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('VerifyPhoneNumber')
+                navigation.navigate('Login')
               }}>
               <View style={styles.btn}>
                 <View style={{ width: 32 }} />
 
-                <Text style={styles.btnText}>Continuer</Text>
+                <Text style={styles.btnText}>Reinitialiser</Text>
 
                 <MaterialCommunityIcons
                   color="#fff"
@@ -63,27 +60,26 @@ const ForgotPaswordScreen = ({ navigation  }) => {
                 />
               </View>
             </TouchableOpacity>
-            
-            <TouchableOpacity
+
+            <Text style={styles.formActionSpacer}></Text>
+          </View>
+
+          <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Register")
+              // handle link
             }}
             style={{ marginTop: 'auto' }}>
-            <Text style={styles.formActionSpacer}>
             <Text style={styles.formFooter}>
-            Pas membre? <Text style={{ color: Colors.red }}>Creer un compte</Text>
+            Code non reçu? <Text style={{ color: Colors.red }}>Renvoyer le code</Text>
             </Text>
-            </Text>
-            
           </TouchableOpacity>
-          </View>
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default ForgotPaswordScreen;
+export default VerifyPhoneNumber;
 
 const styles = StyleSheet.create({
   container: {
@@ -102,7 +98,7 @@ const styles = StyleSheet.create({
     marginBottom: 36,
   },
   title: {
-    fontSize: sizes.width * 0.07,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#222',
     marginBottom: 8,
@@ -144,11 +140,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: '500',
     color: '#222',
     zIndex: 9,
-    //paddingLeft: 2,
+    paddingLeft: 2,
   },
   btnSecondary: {
     flexDirection: 'row',
@@ -166,7 +162,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   inputControl: {
-    height: 44,
+    height: 50,
     backgroundColor: '#f3eff6',
     paddingLeft: INPUT_OFFSET,
     paddingRight: 24,
@@ -183,7 +179,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderWidth: 1,
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     borderColor: '#000',
   },
   btnText: {

@@ -33,7 +33,7 @@ export const colors = {
   //textColor: "#FFFFFF",
   //titleItemColor: "#43dde6",
  // buttonColor: "#fc5185",
-  assetsColor: "#fc5185",
+  aleartoire: "#fc5185",
   mainColor: "#100b11",
   secondColor: "#dce0d9",
   accentColor: "#9381ff",
@@ -41,10 +41,28 @@ export const colors = {
   textColor: "#ffffff",
   statsCardColor: "#d9dfd5",
   secondCardColor: "#f5f5f5",
-  bodyColor: "#bab9ba"
+  assetSecondColor: "#EFEFEF",
+  bodyColor: "#bab9ba",
+  wait: "#3b71ca",
+  alert: "#14a44d",
+  danger: "#dc4c64",
+  warm: "	#e4a11b",
+  assetsColor: "#7A120B"
   
 };
 
+export const COLORS = {
+  primary: "#7F5DF0",     // Light purple
+  secondary: "#5D2DFD",   // Dark purple
+
+  white: "#fff",
+  black: "#000000",
+  green: "#37E39F",
+  red: "#F9A8BA",
+  gray: "#6A6A6A",
+  lightGray: "#dbdbdb",
+  lightGray1: "#f5f6fa"
+};
 
 export const shadow = {
   light: {
@@ -65,6 +83,17 @@ export const shadow = {
       height: 2,
     },
   },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 2
+}
 };
 
 //

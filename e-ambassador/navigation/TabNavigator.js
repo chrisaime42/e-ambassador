@@ -6,90 +6,130 @@ import ProfileScreen from "../screens/ProfileScreen";
 import HistoriqueScreen from "../screens/HistoriqueScreen";
 import HomeScreen from "../screens/HomeScreen";
 import Colors from "../constants/Colors";
-import { colors, sizes } from "../constants/Theme";
-import { Animated, StyleSheet } from "react-native";
+import { colors, shadow, sizes } from "../constants/Theme";
+import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SettingScreen from "../screens/SettingScreen";
-import { BlurView } from "expo-blur";
-
-
-const tabs = [
-    {
-      name: 'Home',
-      screen: HomeScreen,
-    },
-    {
-      name: 'Historiques',
-      screen: HistoriqueScreen,
-    },
-    {
-      name: 'Profile',
-      screen: ProfileScreen,
-    },
-    {
-      name: 'Search',
-      screen: SettingScreen,
-    },
-  ];
-
+import Notification from "../screens/NotificationScreen";
+import PortefeuilleScreen from "../screens/PortefeuilleScreen";
+import Font from "../constants/Font";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import NotificationScreen from "../screens/NotificationScreen";
+import CustomersScreen from "../screens/CustomersScreen";
 const Tab = createBottomTabNavigator();
+const TabBarCustomButtom = ({children, onPress}) => {
+  return (
+      <TouchableOpacity
+        style={{
+          top: -25,
+          justifyContent: "center",
+          alignItems: "center",
+          ...styles.shadow
+        }}
+        onPress={onPress}
+      >
+      
+       <LinearGradient 
+          colors={[colors.assetsColor, colors.assetsColor]}
+          style={{ width: 60, height: 60, borderRadius: 35}}
+        >
+        {children} 
+       </LinearGradient>
+    </TouchableOpacity>
+  )
+}
+
 
 const TabNavigator = () => {
-    const offsetAnimation = React.useRef(new Animated.Value(0)).current;
+  function Bottom() {
+    return (
+      <View><Text>Text</Text></View>
+    )
+  }
     return (
     <>
-        <Tab.Navigator initialRouteName="Home" 
+        <Tab.Navigator
         screenOptions={{
             headerShown: false,
-            tabBarShowLabel: false, 
-            headerShadowVisible: true,
+            tabBarShowLabel: false,
             tabBarStyle: {
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              elevation: 0,
               backgroundColor: colors.backgroundColor,
-              borderTopWidth: 0,
+              borderTopColor: "transparent",
+              //height: 100
             }
         }}
-        
         >
-        { tabs.map(({ name, screen }, index) =>  
-            {
-            return  (
-                <Tab.Screen key={name} name={name} component={screen}
-                    options={{
-                        tabBarIcon: ({focused}) => {
-                            return  <Icon icon={name} size={40} style={{
-                                tintColor: focused ? colors.titleItemColor : colors.gray
-                            }} 
-                        
-                            />;
-                        },
-                        
-                    }} 
-                    listeners={{
-                        focus: () => {
-                            Animated.spring(offsetAnimation, {
-                                toValue: index * (sizes.width / tabs.length),
-                                useNativeDriver: true
-                            }).start()
-                        }
-                    }}
-                    
-                /> 
-                )
-                
-            })
-        }
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View style={{ alignItems: "center", justifyContent: "center"}}>
+                 <AntDesign name="home" size={24} color={focused ? colors.assetsColor : colors.mainColor}
+                 />
+              </View>
+              
+            )
+          }}
+         />
+        <Tab.Screen
+          name="zz"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: ({ focused}) => (
+              <View style={{ alignItems: "center", justifyContent: "center"}}>
+                 <AntDesign name="barschart" size={24} color={focused ? colors.assetsColor : colors.mainColor} 
+                  />
+              </View>
+            )
+          }}
+         />  
+        <Tab.Screen
+        name="Customers"
+        component={CustomersScreen}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View style={{ alignItems: "center", justifyContent: "center"}}>
+                 <AntDesign name="addusergroup" size={24} color={colors.backgroundColor}
+                  />
+              </View>
+            ),
+            tabBarButton: (props) => (
+              <TabBarCustomButtom
+                {...props}
+               />
+            )
+          }}
+         />  
+        <Tab.Screen
+          name="Notification"
+          component={NotificationScreen}
+          options={{
+            tabBarIcon: ({ focused}) => (
+              <View style={{ alignItems: "center", justifyContent: "center"}}>
+                 <Ionicons name="notifications-outline" size={24} color={focused ? colors.assetsColor : colors.mainColor}
+                  />
+              </View>
+            )
+          }}
+         />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{
+            tabBarIcon: ({ focused}) => (
+              <View style={{ alignItems: "center", justifyContent: "center"}}>
+                 <AntDesign name="user" size={24} color={focused ? colors.assetsColor : colors.mainColor} />
+              </View>
+            )
+          }}
+         />
         </Tab.Navigator>
-        <Animated.View
-        style={[
-          styles.indicator,
-          {
-            transform: [
-              {
-                translateX: offsetAnimation,
-              },
-            ],
-          },
-        ]}
-      />
     </>
     )
 }
@@ -101,9 +141,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 10,
     height: 2,
-    left: sizes.width / tabs.length / 2 - 5,
     bottom: 5,
     backgroundColor: Colors.active,
     zIndex: 100,
   },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 2
+}
 });

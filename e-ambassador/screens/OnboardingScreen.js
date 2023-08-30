@@ -64,7 +64,7 @@ const OnboardingScreen = ({ navigation : { navigate}}) => {
 
               <TouchableOpacity 
                 activeOpacity={.8}
-                onPress={() => navigate('Register')}
+                onPress={() => navigate('Home')}
               >
                 <View style={styles.btn}>
                   <Text style={styles.textBtn}>Démarrer </Text>

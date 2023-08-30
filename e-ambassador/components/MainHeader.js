@@ -6,14 +6,16 @@ import Profile from "../assets/images/man.png";
 import Font from '../constants/Font';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
-const MainHeader = ({title}) => {
+const MainHeader = ({}) => {
  const insets = useSafeAreaInsets();
+ const navigation = useNavigation()
   return (
     <View style={[styles.container,{marginTop: Platform.OS =="ios" ? 5 : 5}]}>
       <View style={styles.details}>
         <View style={styles.profileContainer}>
-          <TouchableOpacity onPress={() => console.log("Profile")}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <Image source={Profile}
             style={styles.image} />
           </TouchableOpacity>
@@ -24,7 +26,7 @@ const MainHeader = ({title}) => {
           </View>
         </View>
         <TouchableOpacity>
-          <Ionicons name="notifications-outline" size={24} color="black" />
+          <Ionicons name="notifications-outline" size={24} color="black" onPress={() => navigation.navigate("Notification")} />
         </TouchableOpacity>
      
     </View>

@@ -13,7 +13,8 @@ const StatisticsCard = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.cardContainer}> 
-            <View style={[styles.statisticCard]}>
+          <TouchableOpacity onPress={() => console.log('Clients enregistrés')}>
+          <View style={[styles.statisticCard]}>
                <View style={styles.columnStats}>
                <View style={styles.header}>
                     <Ionicons name="arrow-up-circle-sharp" size={30} color={colors.secondCardColor} />
@@ -22,6 +23,9 @@ const StatisticsCard = ({navigation}) => {
                     <View style={{ alignSelf: "flex-start", paddingHorizontal: spacing.s }}><Text style={{ color: colors.textColor, paddingHorizontal: spacing.s }}>Enregistrés</Text></View>
                </View>
             </View>
+          </TouchableOpacity>
+           
+            <TouchableOpacity onPress={() => console.log('Clients signés')}>
             <View style={[styles.statisticCardRight]}>
                 <View style={styles.columnStats}>
                     <View style={styles.header}>
@@ -31,24 +35,31 @@ const StatisticsCard = ({navigation}) => {
                     <View style={styles.footer}><Text style={styles.totalText}>Clients signés</Text></View>
                 </View>
             </View>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => console.log('Clients relancés')}>
             <View style={[styles.statisticCardRightBottom]}>
                 <View style={styles.columnStats}>
                     <View style={styles.header}>
                     <Ionicons name="refresh-circle-sharp" size={30} color={colors.mainColor} />
                     </View>
-                    <View style={styles.body}><Text style={styles.total}>100</Text></View>
+                    <View style={styles.body}><Text style={styles.total}>51</Text></View>
                     <View style={styles.footer}><Text style={styles.totalText}>Clients relancés</Text></View>
                 </View>
             </View>
-            <View style={[styles.statisticCardRightBottom]}>
-                <View style={styles.columnStats}>
-                    <View style={styles.header}>
-                    <Ionicons name="remove-circle-sharp" size={30} color={colors.mainColor} />
-                    </View>
-                    <View style={styles.body}><Text style={styles.total}>100</Text></View>
-                    <View style={styles.footer}><Text style={styles.totalText}>Clients revoqués</Text></View>
-                </View>
-            </View>
+            </TouchableOpacity>
+            
+            <TouchableOpacity onPress={() => console.log('Clients revoqués')}>
+              <View style={[styles.statisticCardRightBottom]}>
+                  <View style={styles.columnStats}>
+                      <View style={styles.header}>
+                      <Ionicons name="remove-circle-sharp" size={30} color={colors.mainColor} />
+                      </View>
+                      <View style={styles.body}><Text style={styles.total}>0</Text></View>
+                      <View style={styles.footer}><Text style={styles.totalText}>Clients revoqués</Text></View>
+                  </View>
+              </View>
+            </TouchableOpacity>
         </View>
     </SafeAreaView>
   )
@@ -63,7 +74,7 @@ const styles = StyleSheet.create({
       cardContainer: {
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         marginHorizontal: spacing.l,
         marginVertical: spacing.l,
       },
@@ -84,13 +95,13 @@ const styles = StyleSheet.create({
         borderRadius: 27,
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
-        marginTop:5
+        marginTop:10
       },
       columnStats: {
         flexDirection: "column",
       },
       body: {
-        alignSelf: "flex-start",
+        alignSelf: "center",
         paddingHorizontal: spacing.s
       },
       header: {
@@ -101,7 +112,7 @@ const styles = StyleSheet.create({
        top: 5
       },
       footer: {
-        alignSelf: "flex-start",
+        alignSelf: "center",
         paddingHorizontal: spacing.s
       },
       titleColor: {
@@ -114,6 +125,7 @@ const styles = StyleSheet.create({
       },
       totalText: {
         fontFamily: Font["figtree-medium"],
-        paddingHorizontal: spacing.s
+        paddingHorizontal: spacing.s,
+        fontSize: Platform.OS == "ios" ? 12 : 15
       }
 })

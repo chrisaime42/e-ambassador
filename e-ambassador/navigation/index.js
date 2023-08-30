@@ -11,6 +11,7 @@ import { Text } from "react-native";
 import CreateNewPasswordScreen from "../screens/CreateNewPasswordScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
 import HomeScreen from "../screens/HomeScreen";
+import Notification from "../screens/NotificationScreen";
 
 
 const theme = {
@@ -38,7 +39,6 @@ const RootNavigator = () => {
         headerShown: false,
       }}
       initialRouteName="Onboarding"
-      
     >
       <Stack.Screen  name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
@@ -47,8 +47,7 @@ const RootNavigator = () => {
       <Stack.Screen name="ForgotPassword" component={ForgotPaswordScreen}  />
       <Stack.Screen name="VerifyPasswordOTP" component={VerifyPasswordOTPScreen} />
       <Stack.Screen name="CreateNewPassword" component={CreateNewPasswordScreen} />
-      
-      
+      <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );
 }

@@ -1,215 +1,182 @@
-import {
-  KeyboardAvoidingView,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React from "react";
-import Spacing from "../constants/Spacing";
-import FontSize from "../constants/FontSize";
-import Colors from "../constants/Colors";
-import Font from "../constants/Font";
-import { Ionicons } from "@expo/vector-icons";
-import AppTextInput from "../components/AppTextInput";
+import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Logo from "../assets/images/favicon.png"
+import Colors from '../constants/Colors'
+import { colors, sizes } from '../constants/Theme'
 
-
-const LoginScreen = ({ navigation: { navigate } }) => {
+const LoginScreen = ({navigation}) => {
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
   return (
-    <KeyboardAvoidingView style={{ flex : 1}} 
-          behavior={Platform.OS === 'ios' ? 'padding' : ''}
-        > 
-        <ScrollView alwaysBounceVertical={false} showsVerticalScrollIndicator={false} >
-        <SafeAreaView>
-          <View
-            style={{
-              padding: Spacing * 2,
-            }}
-          >
-            <View
-              style={{
-                alignItems: "center",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: FontSize.xLarge,
-                  color: Colors.primary,
-                  fontFamily: Font["poppins-bold"],
-                  marginVertical: Spacing * 3,
-                }}
-              >
-                Connectez-vous
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Font["poppins-semiBold"],
-                  fontSize: FontSize.large,
-                  maxWidth: "60%",
-                  textAlign: "center",
-                }}
-              >
-                Bon retour, vous nous avez manqué !
-              </Text>
-            </View>
-            <View
-              style={{
-                marginVertical: Spacing * 3,
-              }}
-            >
-              <AppTextInput placeholder="Email" />
-              <AppTextInput placeholder="Mot de passe" />
-            </View>
+  
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <ScrollView showsVerticalScrollIndicator={false} alwaysBounceVertical={false} alwaysBounceHorizontal={false} automaticallyAdjustKeyboardInsets={true}>
+        <View style={styles.container}>
+        <View style={styles.header}>
+          <Image
+            alt=""
+            resizeMode="contain"
+            style={styles.headerImg}
+            source={Logo}
+          />
 
-           <TouchableOpacity onPress={() => navigate('ForgotPassword')}>
-            <View>
-                <Text
-                  style={{
-                    fontFamily: Font["poppins-semiBold"],
-                    fontSize: FontSize.small,
-                    color: Colors.primary,
-                    alignSelf: "flex-end",
-                  }}
-                >
-                  Mot de passe oublié ?
-                </Text>
-              </View>
-           </TouchableOpacity>
+          <Text style={styles.title}>
+          Connectez-vous <Text style={{ color: Colors.red }}>E-ambassador</Text>
+          </Text>
 
-            <TouchableOpacity
-              style={{
-                padding: Spacing * 2,
-                backgroundColor: Colors.primary,
-                marginVertical: Spacing * 3,
-                borderRadius: Spacing,
-                shadowColor: Colors.primary,
-                shadowOffset: {
-                  width: 0,
-                  height: Spacing,
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: Spacing,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: Font["poppins-bold"],
-                  color: Colors.onPrimary,
-                  textAlign: "center",
-                  fontSize: FontSize.large,
-                }}
-              >
-                Sign in
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigate("Register")}
-              style={{
-                padding: Spacing,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: Font["poppins-semiBold"],
-                  color: Colors.text,
-                  textAlign: "center",
-                  fontSize: FontSize.small,
-                }}
-              >
-                Create new account
-              </Text>
-            </TouchableOpacity>
+          <Text style={styles.subtitle}>
+          Devenez un ambassadeur actif de notre plateforme.
+          </Text>
+        </View>
+        <View style={styles.form}>
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>Email</Text>
 
-            <View
-              style={{
-                marginVertical: Spacing * 3,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: Font["poppins-semiBold"],
-                  color: Colors.primary,
-                  textAlign: "center",
-                  fontSize: FontSize.small,
-                }}
-              >
-                Or continue with
-              </Text>
-
-              <View
-                style={{
-                  marginTop: Spacing,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    padding: Spacing,
-                    backgroundColor: Colors.gray,
-                    borderRadius: Spacing / 2,
-                    marginHorizontal: Spacing,
-                  }}
-                >
-                  <Ionicons
-                    name="logo-google"
-                    color={Colors.text}
-                    size={Spacing * 2}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    padding: Spacing,
-                    backgroundColor: Colors.gray,
-                    borderRadius: Spacing / 2,
-                    marginHorizontal: Spacing,
-                  }}
-                >
-                  <Ionicons
-                    name="logo-apple"
-                    color={Colors.text}
-                    size={Spacing * 2}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    padding: Spacing,
-                    backgroundColor: Colors.gray,
-                    borderRadius: Spacing / 2,
-                    marginHorizontal: Spacing,
-                  }}
-                >
-                  <Ionicons
-                    name="logo-facebook"
-                    color={Colors.text}
-                    size={Spacing * 2}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              onChangeText={email => setForm({ ...form, email })}
+              placeholder="hertz@example.com"
+              placeholderTextColor="#6b7280"
+              style={styles.inputControl}
+              value={form.email}
+            />
           </View>
-          <View style={styles.RigthCircle} />
-        </SafeAreaView>
-        </ScrollView>
-      </KeyboardAvoidingView>
-   
-  );
-};
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>Mot de passe</Text>
 
-export default LoginScreen;
+            <TextInput
+              autoCorrect={false}
+              onChangeText={password => setForm({ ...form, password })}
+              placeholder="********"
+              placeholderTextColor="#6b7280"
+              style={styles.inputControl}
+              secureTextEntry={true}
+              value={form.password}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ForgotPassword");
+            }}
+            style={{ marginTop: 'auto' }}>
+            <Text style={[styles.formFooter, { alignSelf: "flex-end", right: 2}]}>
+              <Text>Mot de passe oublié?</Text>
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.formAction}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Root")
+              }}>
+              <View style={styles.btn}>
+                <Text style={styles.btnText}>Connectez-vous</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Register");
+            }}
+            style={{ marginTop: 'auto' }}>
+            <Text style={styles.formFooter}>
+             Pas de compte?{' '}
+              <Text style={{ color: Colors.red}} >Inscrivez-vous</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+        </View>
+        </ScrollView>
+    </SafeAreaView>
+   
+  )
+}
+
+export default LoginScreen
 
 const styles = StyleSheet.create({
-  RigthCircle: {
-    backgroundColor: "red",
-    position: 'absolute',
-    width:  200,
-    height: 210,
-    borderRadius: 200,
-    left:10,
-    top: -40,
-    
+  container: {
+    padding: 24,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
   },
-});
+  header: {
+    marginVertical: sizes.height * 0.05,
+  },
+  headerImg: {
+    width: sizes.width * 0.5,
+    height: sizes.height * 0.2,
+    alignSelf: 'center',
+   // marginBottom: 20,
+  },
+  title: {
+    fontSize: sizes.width * 0.04,
+    fontWeight: '800',
+    color: '#1d1d1d',
+    marginBottom: 6,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#929292',
+    textAlign: 'center',
+  },
+  form: {
+    marginBottom: 24,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+  },
+  formAction: {
+    marginVertical: 24,
+  },
+  formFooter: {
+    fontSize: sizes.width * 0.04,
+    fontWeight: '600',
+    color: '#000',
+    textAlign: 'center',
+    letterSpacing: 0.15,
+  },
+  input: {
+    marginBottom: 16,
+  },
+  inputLabel: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#222',
+    marginBottom: 8,
+  },
+  inputControl: {
+    height: 50,
+    backgroundColor: '#f1f5f9',
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#222',
+  },
+  btn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    backgroundColor: '#000',
+    borderColor: '#000',
+  },
+  btnText: {
+    fontSize: 18,
+    lineHeight: 26,
+    fontWeight: '600',
+    color: '#fff',
+  },
+})
