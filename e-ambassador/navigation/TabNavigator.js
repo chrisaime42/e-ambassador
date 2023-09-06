@@ -6,46 +6,51 @@ import ProfileScreen from "../screens/ProfileScreen";
 import HistoriqueScreen from "../screens/HistoriqueScreen";
 import HomeScreen from "../screens/HomeScreen";
 import Colors from "../constants/Colors";
-import { colors, shadow, sizes } from "../constants/Theme";
+import { COLORS, colors, shadow, sizes } from "../constants/Theme";
 import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SettingScreen from "../screens/SettingScreen";
 import Notification from "../screens/NotificationScreen";
 import PortefeuilleScreen from "../screens/PortefeuilleScreen";
 import Font from "../constants/Font";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import FeatherIcon from 'react-native-vector-icons/Feather';
+
 import { LinearGradient } from "expo-linear-gradient";
 import NotificationScreen from "../screens/NotificationScreen";
 import CustomersScreen from "../screens/CustomersScreen";
+
+
+
 const Tab = createBottomTabNavigator();
-const TabBarCustomButtom = ({children, onPress}) => {
-  return (
-      <TouchableOpacity
-        style={{
-          top: -25,
-          justifyContent: "center",
-          alignItems: "center",
-          ...styles.shadow
-        }}
-        onPress={onPress}
-      >
+// const TabBarCustomButtom = ({children, onPress}) => {
+//   return (
+//       <TouchableOpacity
+//         style={{
+//           top: -25,
+//           justifyContent: "center",
+//           alignItems: "center",
+//           ...styles.shadow
+//         }}
+//         onPress={onPress}
+//       >
       
-       <LinearGradient 
-          colors={[colors.assetsColor, colors.assetsColor]}
-          style={{ width: 60, height: 60, borderRadius: 35}}
-        >
-        {children} 
-       </LinearGradient>
-    </TouchableOpacity>
-  )
-}
+//        <LinearGradient 
+//           colors={[colors.assetsColor, colors.assetsColor]}
+//           style={{ width: 60, height: 60, borderRadius: 35}}
+//         >
+//         {children} 
+//        </LinearGradient>
+//     </TouchableOpacity>
+//   )
+// }
 
 
 const TabNavigator = () => {
-  function Bottom() {
-    return (
-      <View><Text>Text</Text></View>
-    )
-  }
+  // function Bottom() {
+  //   return (
+  //     <View><Text>Text</Text></View>
+  //   )
+  // }
     return (
     <>
         <Tab.Navigator
@@ -70,33 +75,32 @@ const TabNavigator = () => {
           options={{
             tabBarIcon: ({focused}) => (
               <View style={{ alignItems: "center", justifyContent: "center"}}>
-                 <AntDesign name="home" size={24} color={focused ? colors.assetsColor : colors.mainColor}
+                 <FeatherIcon name="home" size={24} color={focused ? colors.assetsColor : COLORS.lightGray }
                  />
               </View>
-              
             )
           }}
          />
         <Tab.Screen
-          name="zz"
-          component={HomeScreen}
+          name="Customers"
+          component={CustomersScreen}
           options={{
             tabBarIcon: ({ focused}) => (
               <View style={{ alignItems: "center", justifyContent: "center"}}>
-                 <AntDesign name="barschart" size={24} color={focused ? colors.assetsColor : colors.mainColor} 
-                  />
+                 <FeatherIcon name="users" size={24} color={focused ? colors.assetsColor : COLORS.lightGray }
+                 />
               </View>
             )
           }}
          />  
-        <Tab.Screen
-        name="Customers"
-        component={CustomersScreen}
+        {/* <Tab.Screen
+          name="Notifications"
+          component={NotificationScreen}
           options={{
             tabBarIcon: ({focused}) => (
               <View style={{ alignItems: "center", justifyContent: "center"}}>
-                 <AntDesign name="addusergroup" size={24} color={colors.backgroundColor}
-                  />
+                 <FeatherIcon name="bell" size={24} color={focused ? colors.assetsColor : COLORS.lightGray }
+                 />
               </View>
             ),
             tabBarButton: (props) => (
@@ -105,26 +109,27 @@ const TabNavigator = () => {
                />
             )
           }}
-         />  
-        <Tab.Screen
-          name="Notification"
-          component={NotificationScreen}
+         />   */}
+        {/* <Tab.Screen
+          name="Transaction"
+          component={PortefeuilleScreen}
           options={{
-            tabBarIcon: ({ focused}) => (
+            tabBarIcon: ({ focused }) => (
               <View style={{ alignItems: "center", justifyContent: "center"}}>
-                 <Ionicons name="notifications-outline" size={24} color={focused ? colors.assetsColor : colors.mainColor}
-                  />
+                <FeatherIcon name="trending-up" size={24} color={focused ? colors.assetsColor : COLORS.lightGray }
+                 />
               </View>
             )
           }}
-         />
+         /> */}
         <Tab.Screen
-          name="Profile"
+          name="Parametre"
           component={ProfileScreen}
           options={{
             tabBarIcon: ({ focused}) => (
               <View style={{ alignItems: "center", justifyContent: "center"}}>
-                 <AntDesign name="user" size={24} color={focused ? colors.assetsColor : colors.mainColor} />
+                 <FeatherIcon name="settings" size={24} color={focused ? colors.assetsColor : COLORS.lightGray }
+                 />
               </View>
             )
           }}

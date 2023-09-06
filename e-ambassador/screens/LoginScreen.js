@@ -15,7 +15,7 @@ const LoginScreen = ({navigation}) => {
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView showsVerticalScrollIndicator={false} alwaysBounceVertical={false} alwaysBounceHorizontal={false} automaticallyAdjustKeyboardInsets={true}>
         <View style={styles.container}>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <Image
             alt=""
             resizeMode="contain"
@@ -30,6 +30,11 @@ const LoginScreen = ({navigation}) => {
           <Text style={styles.subtitle}>
           Devenez un ambassadeur actif de notre plateforme.
           </Text>
+        </View> */}
+        <View style={styles.header}>
+          <Text style={styles.title}>Bon retour!</Text>
+
+          <Text style={styles.subtitle}>Connectez-vous à votre compte</Text>
         </View>
         <View style={styles.form}>
           <View style={styles.input}>
@@ -100,6 +105,21 @@ const LoginScreen = ({navigation}) => {
 export default LoginScreen
 
 const styles = StyleSheet.create({
+  // container: {
+  //   padding: 24,
+  //   flexGrow: 1,
+  //   flexShrink: 1,
+  //   flexBasis: 0,
+  // },
+  // header: {
+  //   marginVertical: sizes.height * 0.05,
+  // },
+  // headerImg: {
+  //   width: sizes.width * 0.5,
+  //   height: sizes.height * 0.2,
+  //   alignSelf: 'center',
+  //  // marginBottom: 20,
+  // },
   container: {
     padding: 24,
     flexGrow: 1,
@@ -107,17 +127,11 @@ const styles = StyleSheet.create({
     flexBasis: 0,
   },
   header: {
-    marginVertical: sizes.height * 0.05,
-  },
-  headerImg: {
-    width: sizes.width * 0.5,
-    height: sizes.height * 0.2,
-    alignSelf: 'center',
-   // marginBottom: 20,
+    marginVertical: 36,
   },
   title: {
-    fontSize: sizes.width * 0.04,
-    fontWeight: '800',
+    fontSize: sizes.width * 0.13,
+    fontWeight: 'bold',
     color: '#1d1d1d',
     marginBottom: 6,
     textAlign: 'center',

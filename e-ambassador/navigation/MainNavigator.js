@@ -37,6 +37,7 @@ const MainNavigator = () => {
         }}
       initialRouteName="Root"
        >
+       <Stack.Screen name="Onbording" component={OnboardingScreen} />
        <Stack.Screen name="Login" component={LoginScreen} />
        <Stack.Screen name="Home" component={HomeScreen} />
        <Stack.Screen name="Register" component={RegisterScreen} />

@@ -1,188 +1,165 @@
+import React, { useRef, useState } from 'react';
 import {
-  Dimensions,
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
+  SafeAreaView,
+  Image,
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import React from "react";
-import Spacing from "../constants/Spacing";
-import FontSize from "../constants/FontSize";
-import Colors from "../constants/Colors";
-import Font from "../constants/Font";
-import Swiper from "react-native-swiper";
-const { height, width } = Dimensions.get("window");
-import Customers from "../assets/images/11.jpeg";
-import Customers1 from "../assets/images/22.jpeg";
-import Customers2 from "../assets/images/33.jpeg";
-import Customers3 from "../assets/images/44.jpeg";
+  Dimensions,
+  Animated,
+} from 'react-native';
+import Swiper from 'react-native-swiper';
+import Colors from '../constants/Colors';
+import { COLORS } from '../constants/Theme';
+import Photo from "../assets/images/22.jpeg";
 
+const { width, height } = Dimensions.get('window');
 
-const OnboardingScreen = ({ navigation : { navigate}}) => {
+const slides = [
+  {
+    title: 'Bienvenue à E-ambassador!',
+    message: " Transformez les opportunités en succès avec nous.",
+    action: 'Démarrer',
+  },
+  {
+    title: 'Récoltez les Récompenses',
+    message:
+      "Propulsez Icebrain, gagnez des récompenses. Vos actions font la différence.",
+    action: 'Continue',
+  },
+  {
+    title: "Prêt pour le vol  ?",
+    message:
+      "En tant qu'ambassadeur Icebrain ? Rejoignez-nous pour façonner l'avenir.",
+    action: "Allons-y",
+  },
+];
+
+const  OnboardingScreen = ({navigation}) => {
+  const [slide, setSlide] = useState(0);
+
+  const swiper = useRef();
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const contentOpacity = useRef(new Animated.Value(1)).current;
+
+  const animatedBackgroundLeft = scrollX.interpolate({
+    inputRange: [-1, 0, 1],
+    outputRange: [1, 0, -1],
+  });
+
   return (
-    
-    // <View style={styles.container}>
-    //   <StatusBar hidden={true} />
-    //   <Swiper 
-    //     autoplay={true} 
-    //     autoplayTimeout={1000}
-    //     bounces={false}
-    //     alwaysBounceHorizontal={false}
-    //     alwaysBounceVertical={false}
-    //   >
-    //     <View style ={ styles.slide}>
-    //       <Image source={Customers1} style={styles.image} />
-    //     </View>
+    <SafeAreaView style={styles.container}>
+      <Animated.View style={{ left: animatedBackgroundLeft }}>
+        <Image
+          source={{ uri: 'https://withfra.me/shared/Landing.1.png' }}
+          resizeMode="contain"
+          style={styles.slideImage}
+        />
+      </Animated.View>
+      <Swiper
+        ref={swiper}
+        showsPagination={false}
+        loop={false}
+        onIndexChanged={setSlide}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  x: scrollX,
+                },
+              },
+            },
+          ], 
+          { useNativeDriver: false },
+        )}
+        onTouchStart={() => {
+          Animated.timing(contentOpacity, {
+            toValue: 0,
+            duration: 250,
+            useNativeDriver: true,
+          }).start();
+        }}
+        onTouchEnd={() => {
+          Animated.timing(contentOpacity, {
+            toValue: 1,
+            duration: 250,
+            useNativeDriver: true,
+          }).start();
+        }}
+        scrollEventThrottle={1}>
+        {slides.map((item, index) => {
+          return (
+            <Animated.View
+              key={index}
+              style={[styles.slide, { opacity: contentOpacity }]}>
+              <Text style={styles.slideTitle}>{item.title}</Text>
+              <Text style={styles.slideText}>{item.message}</Text>
 
-    //   </Swiper>
-    //   <View style={styles.textContainer}>
-    //     <View style={styles.titleContainer}>
-    //       <Text style={styles.title}>E-ambassador.</Text>
-    //     </View>
-    //     <View style={styles.subTitleContainer}>
-    //       <Text style={styles.subTitle}>Deviens ambassadoeur en un clic.</Text>
-    //     </View>
-    //   </View>
-    //   <View style={styles.buttonContainer}>
-    //     <View style={styles.becomeAmbassador}>
-    //       <Text style={styles.ambassador}>Commencer &#x27A4;</Text>
-    //     </View>
-    //   </View>
-    // </View>
-    <View style={{ flex : 1}}>
-      <StatusBar hidden={true} />
-      <Swiper autoplay={true} showsButtons={false} showsPagination={false} autoplayTimeout={10} style={{ backgroundColor: Colors.active}} >
-      <ImageBackground style={{ flex:1, backgroundColor: Colors.text, opacity: .2}} resizeMethod="auto" resizeMode="cover" source={Customers1} />
-      </Swiper>
-          <View style={styles.details}>
-              <Text style={styles.titleAmbassador}>E-ambassador</Text>
-              <Text  style={styles.subTitleAmbassador}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia molestiae quas vel sint commodi repudiandae </Text>
-
-              <TouchableOpacity 
-                activeOpacity={.8}
-                onPress={() => navigate('Home')}
-              >
-                <View style={styles.btn}>
-                  <Text style={styles.textBtn}>Démarrer </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  swiper.current.scrollTo(slide + 1, true),
+                  navigation.navigate('Login')
+                }}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>{item.action}</Text>
                 </View>
               </TouchableOpacity>
-          </View>
-        
-    </View>
+            </Animated.View>
+          );
+        })}
+      </Swiper>
+    </SafeAreaView>
   );
-};
+}
 
 export default OnboardingScreen;
 
 const styles = StyleSheet.create({
-  container : {
-    flex: 1,    
+  container: {
+    flex: 1,
+    //backgroundColor: '#1c1f26',
+    backgroundColor: COLORS.black,
   },
   slide: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: Colors.text,
-    opacity: .6
+    backgroundColor: 'transparent',
+    position: 'relative',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 36,
   },
-  image: {
-    width: width,
-    height: height,
-  },
-  textContainer: {
+  slideImage: {
+    width: width * slides.length,
+    height: 0.6 * height,
     position: 'absolute',
-    bottom: 200,
-    marginLeft: 20,
-    height: 120,
-    alignItems: "flex-start",
-    justifyContent: "center"
+    top: 47,
+    left: 0,
   },
-  titleContainer: {
-
-    width: 300,
-    height: 70,
-    backgroundColor: Colors.primary,
-    alignItems: "center",
-    justifyContent: "center"
+  slideTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: 12,
+    textAlign: 'center',
   },
-  title : {
-    fontFamily : Font['poppins-bold'],
-    fontSize: FontSize.xLarge,
-    color: Colors.lightPrimary,
+  slideText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#a9b1cf',
+    textAlign: 'center',
   },
-  subTitleContainer: {
-    width: 250,
-    height: 50,
-    backgroundColor: Colors.primary,
-    opacity: .7,
-    alignItems: "center",
-    justifyContent: "center"
+  button: {
+    backgroundColor: Colors.red,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 36,
+    marginVertical: 48,
   },
-  subTitle: {
-    fontFamily : Font['poppins-regular'],
-    fontSize: FontSize.small,
-    color: Colors.lightPrimary,
+  buttonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'white',
+    textAlign: 'center',
   },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 70,
-    width: 370,
-    height: 60,
-    marginLeft: 20
-  },
-  becomeAmbassador: {
-    width: 180,
-    height: 60,
-    backgroundColor: Colors.primary,
-    opacity: .8,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    //alignSelf: "center"
-  },
-  ambassador:  {
-    fontFamily: Font["poppins-regular"],
-    //fontWeight: "600" ,
-    fontSize: FontSize.Large,
-    color: Colors.lightPrimary
-  },
-  details: {
-    height: '50%',
-    bottom: 0,
-    position: "absolute",
-    paddingHorizontal: 40
-  },
-  titleAmbassador: {
-    color: Colors.background,
-    fontFamily: Font["poppins-bold"],
-    fontSize: FontSize.xxLarge,
-  },
-  subTitleAmbassador: {
-    color: Colors.gray,
-    opacity: .6,
-    fontFamily: Font["poppins-regular"],
-    fontSize: FontSize.medium,
-    textAlign: "justify",
-    letterSpacing: - .1
-  },
-  textBtn: {
-    color: Colors.active,
-    fontFamily: Font["poppins-bold"],
-    fontWeight: "700",
-    fontSize: FontSize.large,
-  },
-  btn: {
-    height: 50,
-    width: 150,
-    backgroundColor: Colors.background,
-    marginTop: Spacing*2,
-    borderRadius: 7,
-    justifyContent: "center",
-    alignItems: "center"
-  }
-
 });

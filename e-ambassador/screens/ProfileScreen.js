@@ -13,6 +13,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Profile from "../assets/images/man.png";
+import { COLORS, sizes } from '../constants/Theme';
 
 const SECTIONS = [
   {
@@ -24,15 +25,22 @@ const SECTIONS = [
     ],
   },
   {
+    header: 'Portefeuille',
+    items: [
+      { icon: 'globe', label: 'Mon solde', type: 'link' },
+      { icon: 'moon', label: 'Retrait', type: 'link' },
+      { icon: 'wifi', label: 'Transaction', type: 'link' },
+    ],
+  },
+  {
     header: 'Support',
     items: [
-      { icon: 'flag', label: 'Rapporter un bug', type: 'link' },
       { icon: 'mail', label: 'Contactez-nous', type: 'link' },
+      { icon: 'flag', label: 'Signaler un bug', type: 'link' },
       { icon: 'save', label: 'Partager avec vos amis', type: 'link' },
       { icon: 'save', label: 'Données personnelles', type: 'link' },
       { icon: 'save', label: 'Conditions et utilisations', type: 'link' },
       { icon: 'download', label: 'Licences', type: 'link' },
-      { icon: 'digital', label: '© 2023 Icebrain DIGITAL', },
     ],
   },
 
@@ -150,15 +158,12 @@ const ProfileScreen = ({ navigation }) => {
   // }
   return (
     <SafeAreaView style={styles.container}>
-     <ScrollView contentContainerStyle={{ paddingVertical: 24 }}
-      overScrollMode={'auto'}
-      showsHorizontalScrollIndicator={false}
-    >
-    <View style={[styles.header, { marginTop: Platform.OS == "android" && insets.top}]}>
-      <Text style={styles.title}  >Mon compte</Text>
-    </View>
-   
-
+      <View style={[styles.header, { marginTop: Platform.OS == "android" && insets.top}]}>
+        <Text style={styles.title}  >Mon compte</Text>
+      </View>
+      <ScrollView contentContainerStyle={{ paddingVertical: 24 }}
+        showsVerticalScrollIndicator={false}
+        >
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionHeaderText}>Profile</Text>
@@ -226,6 +231,11 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       </View>
     ))}
+    <View style={[styles.section, { alignSelf: "flex-start", bottom: 20}]}>
+    <View style={styles.sectionHeader}>
+      <Text style={{ color: COLORS.gray }}>© 2023 Icebrain DIGITAL</Text>
+    </View>
+    </View>
     </ScrollView>
   </SafeAreaView>
   );
@@ -236,14 +246,15 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f8f8f8',
-  //  flex: 1,
-    marginBottom: 30
+    flex: 1,
+    marginBottom: 50,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 12,
+    justifyContent: 'flex-start',
+    paddingTop: 10,
+    paddingHorizontal: sizes.width * 0.06,
   },
   title: {
     fontSize: 24,
